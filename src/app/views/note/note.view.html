@@ -1,1 +1,8 @@
-Note view {{id}}
+<ng-container *ngIf="state$ | async as state">
+    <div class="note__toolbar">
+        <button (click)="saveChanges()" title="Save changes">💾</button>
+        <button (click)="deleteNote()" title="Delete note">❌</button>
+    </div>
+    <input class="note__title" type="text" [ngModel]="state.note?.title" (ngModelChange)="patchNote({title: $event})"/>
+    <textarea class="note__text" [ngModel]="state.note?.text"  (ngModelChange)="patchNote({text: $event})"></textarea>
+</ng-container>

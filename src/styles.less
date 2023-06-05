@@ -1,8 +1,11 @@
 html{
     --color-background: #FAFAFC;
     --color-border: #DDDDDD;
+    --color-border-active: #999999;
     --color-text-light: #666666;
+    --font-size-icon: 24px;
     --spacing-small: 8px;
+    --border-radius: 4px;
 }
 
 body{
@@ -12,4 +15,16 @@ body{
 
 a{
     color: inherit;
+}
+
+
+input[type=text], textarea {
+    border: 1px solid var(--color-border);
+    padding: var(--spacing-small);
+    border-radius: var(--border-radius);
+    outline: none;
+
+    &:focus-visible{
+        outline: 1px solid var(--color-border-active);
+    }
 }

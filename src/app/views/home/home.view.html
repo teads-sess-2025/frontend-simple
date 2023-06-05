@@ -1,3 +1,9 @@
+<a routerLink="/note/new">
+    <div class="home__note-preview home__note-create">
+        <h1>+</h1>
+        Create new note
+    </div>
+</a>
 <ng-container *ngFor="let note of notes">
     <a routerLink="/note/{{note.id}}">
         <div class="home__note-preview">

@@ -1,1 +1,8 @@
-Home view
+<ng-container *ngFor="let note of notes">
+    <a routerLink="/note/{{note.id}}">
+        <div class="home__note-preview">
+            <h2>{{note.title}}</h2>
+            <textarea readonly class="home__note-text" [ngModel]="note.text"></textarea>
+        </div>
+    </a>
+</ng-container>

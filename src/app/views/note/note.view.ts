@@ -17,11 +17,10 @@ export class NoteView implements OnChanges {
 
     @HostBinding('class.fsss-note-view--loading')
     isLoading: boolean = false;
-
-    service: NotesService = inject(NotesService);
     
     note: Note = {title: '', text:''};
 
+    private service: NotesService = inject(NotesService);
     private router = inject(Router)
     private changeDetectorRef = inject(ChangeDetectorRef);
   
@@ -51,7 +50,7 @@ export class NoteView implements OnChanges {
     }
 
     deleteNote(){
-        if(isDefined(this.note.id)){
+        if(isDefined(this.note.id) && window.confirm("Are you sure you want to delete this note?")){
             this.isLoading=true;
             this.service.deleteNote(this.note.id)
             .pipe(first(), finalize(()=>this.isLoading=false))

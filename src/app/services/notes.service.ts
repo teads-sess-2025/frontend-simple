@@ -38,7 +38,7 @@ export class NotesService{
         },
     ];
 
-    listNotes(keyword: string): Observable<Note[]>{
+    listNotes(keyword?: string): Observable<Note[]>{
         return of(structuredClone(this.DUMMY_DATA));//TODO: Call the backend
     }
 

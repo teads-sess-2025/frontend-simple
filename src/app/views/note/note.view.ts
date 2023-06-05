@@ -1,11 +1,9 @@
-import { ChangeDetectionStrategy, Component, DestroyRef, inject, Input, OnChanges, SimpleChanges } from "@angular/core";
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, HostBinding, inject, Input, OnChanges, SimpleChanges } from "@angular/core";
 import { Router } from "@angular/router";
-import { BehaviorSubject } from "rxjs";
-import { first } from "rxjs/operators";
+import { first, finalize } from "rxjs/operators";
 import { isDefined } from "src/app/helpers/common.helpers";
 import { NotesService } from "src/app/services/notes.service";
 import { Note } from "src/app/types/note";
-import { NoteViewState } from "./note.view.state";
 
 @Component({
     selector: 'fsss-note-view',
@@ -15,61 +13,56 @@ import { NoteViewState } from "./note.view.state";
 })
 export class NoteView implements OnChanges {
     @Input()
-    id?: string;
+    id: string;
+
+    @HostBinding('class.fsss-note-view--loading')
+    isLoading: boolean = false;
 
     service: NotesService = inject(NotesService);
-
-    state$: BehaviorSubject<NoteViewState> = new BehaviorSubject<NoteViewState>({loading: false});
+    
+    note: Note = {title: '', text:''};
 
     private router = inject(Router)
+    private changeDetectorRef = inject(ChangeDetectorRef);
   
     ngOnChanges(changes: SimpleChanges): void {
       if(changes['id'] && isDefined(this.id)){
-        if(this.id==='new'){
-            this.patchState({note: {title: '', text:''}});
-        } else{
+        if(this.id!=='new'){
+            this.isLoading=true;
             this.service.getNote(parseInt(this.id,10))
-                .pipe(first())
-                .subscribe(note=>this.patchState(({note})));
+                .pipe(first(), finalize(()=>this.isLoading=false))
+                .subscribe(note=>this.updateUi(note));
         }
       }
     }
 
-    patchState(changes: Partial<NoteViewState>){
-        if(this.id==='new' && isDefined(changes.note?.id)){
-            this.router.navigateByUrl(`/note/${changes.note.id}`);
-        }
-        this.state$.next({...this.state$.value, ...changes});
-    }
-
-    patchNote(noteChanges: Partial<Note>){
-        if(isDefined(this.state$.value.note)){
-            this.patchState({note: {...this.state$.value.note, ...noteChanges}});
-        }
-    }
-
     saveChanges(){
-        const note: Note|undefined = this.state$.value.note;
-        if(isDefined(note)){
-            if(isDefined(note.id)){
-                this.service.updateNote(note)
-                .pipe(first())
-                .subscribe(note=>this.patchState(({note})));
-            } else{
-                this.service.createNote(note)
-                .pipe(first())
-                .subscribe(note=>this.patchState(({note})));
-            }
+        if(isDefined(this.note.id)){
+            this.isLoading=true;
+            this.service.updateNote(this.note)
+            .pipe(first(), finalize(()=>this.isLoading=false))
+            .subscribe(note=>this.updateUi(note));
+        } else{
+            this.isLoading=true;
+            this.service.createNote(this.note)
+            .pipe(first(), finalize(()=>this.isLoading=false))
+            .subscribe(note=>this.updateUi(note));
         }
     }
 
     deleteNote(){
-        const note: Note|undefined = this.state$.value.note;
-        if(isDefined(note?.id)){
-            this.service.deleteNote(note.id)
+        if(isDefined(this.note.id)){
+            this.isLoading=true;
+            this.service.deleteNote(this.note.id)
+            .pipe(first(), finalize(()=>this.isLoading=false))
             .subscribe(()=>this.router.navigateByUrl('/'));
         } else{
             this.router.navigateByUrl('/');
         }
+    }
+
+    private updateUi(note: Note){
+        this.note=note;
+        this.changeDetectorRef.detectChanges();
     }
 }

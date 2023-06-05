@@ -1,5 +1,6 @@
 import { Injectable } from "@angular/core";
-import { map, Observable, of } from "rxjs";
+import { Observable, of } from "rxjs";
+import { delay } from "rxjs/operators";
 import { Note } from "../types/note";
 
 @Injectable({
@@ -42,7 +43,7 @@ export class NotesService{
     }
 
     getNote(id: number): Observable<Note>{
-        return of({...(this.DUMMY_DATA.find(n=>n.id===id)||({title:'',text:''}))});
+        return of({...(this.DUMMY_DATA.find(n=>n.id===id)||({title:'',text:''}))}).pipe(delay(500));
     }
 
     createNote(note: Note): Observable<Note>{
@@ -50,16 +51,16 @@ export class NotesService{
         const newNote: Note = {...note, id: nextId}
         this.DUMMY_DATA.push(newNote);
 
-        return of(newNote);
+        return of(newNote).pipe(delay(500));
     }
 
     updateNote(note: Note): Observable<Note>{
         this.DUMMY_DATA=this.DUMMY_DATA.map(n=>n.id===note.id?note:n);
-        return of(note);
+        return of(note).pipe(delay(500));
     }
 
     deleteNote(id: number): Observable<void>{
         this.DUMMY_DATA=this.DUMMY_DATA.filter(n=>n.id!==id);
-        return of(null);
+        return of(null).pipe(delay(500));
     }
 }

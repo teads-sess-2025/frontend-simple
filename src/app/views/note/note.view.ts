@@ -1,9 +1,9 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, HostBinding, inject, Input, OnChanges, SimpleChanges } from "@angular/core";
+import { ChangeDetectionStrategy, Component, inject, Input, OnChanges, OnDestroy, SimpleChanges } from "@angular/core";
 import { Router } from "@angular/router";
-import { first, finalize } from "rxjs/operators";
 import { isDefined } from "src/app/helpers/common.helpers";
 import { NotesService } from "src/app/services/notes.service";
 import { Note } from "src/app/types/note";
+import { BaseView } from "../base/base.view";
 
 @Component({
     selector: 'fsss-note-view',
@@ -11,57 +11,52 @@ import { Note } from "src/app/types/note";
     styleUrls: ['./note.view.less'],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class NoteView implements OnChanges {
+export class NoteView extends BaseView<{note: Note}> implements OnChanges, OnDestroy {
     @Input()
     id: string;
 
-    @HostBinding('class.fsss-note-view--loading')
-    isLoading: boolean = false;
-    
-    note: Note = {title: '', text:''};
-
     private service: NotesService = inject(NotesService);
     private router = inject(Router)
-    private changeDetectorRef = inject(ChangeDetectorRef);
   
     ngOnChanges(changes: SimpleChanges): void {
       if(changes['id'] && isDefined(this.id)){
-        if(this.id!=='new'){
-            this.isLoading=true;
-            this.service.getNote(parseInt(this.id,10))
-                .pipe(first(), finalize(()=>this.isLoading=false))
-                .subscribe(note=>this.updateUi(note));
+        if(this.id=='new'){
+            this.updateUiData({note: {title: '', text:''}})
+        } else{
+            this.callService(
+                this.service.getNote(parseInt(this.id,10))
+            ).then(
+                note => this.updateUiData({note})
+            );
         }
       }
     }
 
     saveChanges(){
-        if(isDefined(this.note.id)){
-            this.isLoading=true;
-            this.service.updateNote(this.note)
-            .pipe(first(), finalize(()=>this.isLoading=false))
-            .subscribe(note=>this.updateUi(note));
+        if(isDefined(this.uiData.note.id)){
+            this.callService(
+                this.service.updateNote(this.uiData.note)
+            ).then(
+                note => this.updateUiData({note})
+            );
         } else{
-            this.isLoading=true;
-            this.service.createNote(this.note)
-            .pipe(first(), finalize(()=>this.isLoading=false))
-            .subscribe(note=>this.updateUi(note));
+            this.callService(
+                this.service.createNote(this.uiData.note)
+            ).then(
+                note => this.router.navigateByUrl(`/note/${note.id}`)
+            );
         }
     }
 
     deleteNote(){
-        if(isDefined(this.note.id) && window.confirm("Are you sure you want to delete this note?")){
-            this.isLoading=true;
-            this.service.deleteNote(this.note.id)
-            .pipe(first(), finalize(()=>this.isLoading=false))
-            .subscribe(()=>this.router.navigateByUrl('/'));
+        if(isDefined(this.uiData.note.id) && window.confirm("Are you sure you want to delete this note?")){
+            this.callService(
+                this.service.deleteNote(this.uiData.note.id)
+            ).then(
+                ()=>this.router.navigateByUrl('/')
+            );
         } else{
             this.router.navigateByUrl('/');
         }
-    }
-
-    private updateUi(note: Note){
-        this.note=note;
-        this.changeDetectorRef.detectChanges();
     }
 }

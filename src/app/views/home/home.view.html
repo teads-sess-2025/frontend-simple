@@ -4,7 +4,7 @@
         Create new note
     </div>
 </a>
-<ng-container *ngFor="let note of notes">
+<ng-container *ngFor="let note of uiData.notes">
     <a routerLink="/note/{{note.id}}">
         <div class="home__note-preview">
             <h2>{{note.title}}</h2>

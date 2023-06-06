@@ -2,5 +2,5 @@
     <button (click)="saveChanges()" title="Save changes">💾</button>
     <button (click)="deleteNote()" title="Delete note">❌</button>
 </div>
-<input class="note__title" type="text" [(ngModel)]="note.title"/>
-<textarea class="note__text" [(ngModel)]="note.text"></textarea>
+<input class="note__title" type="text" [(ngModel)]="uiData.note.title"/>
+<textarea class="note__text" [(ngModel)]="uiData.note.text"></textarea>

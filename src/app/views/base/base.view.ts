@@ -4,7 +4,7 @@ import { takeUntil, finalize } from "rxjs/operators";
 
 @Component({template: ''})
 export abstract class BaseView<T> implements OnDestroy {
-    @HostBinding('class.loading-overlay')
+    @HostBinding('class.fsss-loading-overlay')
     isLoading: boolean = false;
 
     uiData: T;

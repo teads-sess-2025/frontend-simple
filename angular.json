@@ -49,12 +49,6 @@
                 }
               ],
               "outputHashing": "all",
-              "fileReplacements": [
-                {
-                  "replace": "src/app/services/notes.service.ts",
-                  "with": "src/app/services/notes.dummy.service.ts"
-                }
-              ]
             },
             "development": {
               "buildOptimizer": false,

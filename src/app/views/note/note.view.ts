@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject, Input, OnChanges, OnDestroy, SimpleChanges } from "@angular/core";
 import { Router } from "@angular/router";
+import { BehaviorSubject } from "rxjs";
 import { isDefined } from "src/app/helpers/common.helpers";
 import { NotesService } from "src/app/services/notes.service";
 import { Note } from "src/app/types/note";
@@ -15,14 +16,20 @@ export class NoteView extends BaseView<{note: Note}> implements OnChanges, OnDes
     @Input()
     id: string;
 
+    isSaving: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+    isDeleting: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+
     private service: NotesService = inject(NotesService);
     private router = inject(Router)
+
+    constructor(){
+        super();
+        this.uiData = {note: {title: '', text:''}};
+    }
   
     ngOnChanges(changes: SimpleChanges): void {
       if(changes['id'] && isDefined(this.id)){
-        if(this.id=='new'){
-            this.updateUiData({note: {title: '', text:''}})
-        } else{
+        if(this.id!=='new'){
             this.callService(
                 this.service.getNote(parseInt(this.id,10))
             ).then(
@@ -35,13 +42,13 @@ export class NoteView extends BaseView<{note: Note}> implements OnChanges, OnDes
     saveChanges(){
         if(isDefined(this.uiData.note.id)){
             this.callService(
-                this.service.updateNote(this.uiData.note)
+                this.service.updateNote(this.uiData.note), this.isSaving
             ).then(
-                note => this.updateUiData({note})
+                note => this.updateUiData({note}),
             );
         } else{
             this.callService(
-                this.service.createNote(this.uiData.note)
+                this.service.createNote(this.uiData.note), this.isSaving
             ).then(
                 note => this.router.navigateByUrl(`/note/${note.id}`)
             );
@@ -51,7 +58,7 @@ export class NoteView extends BaseView<{note: Note}> implements OnChanges, OnDes
     deleteNote(){
         if(isDefined(this.uiData.note.id) && window.confirm("Are you sure you want to delete this note?")){
             this.callService(
-                this.service.deleteNote(this.uiData.note.id)
+                this.service.deleteNote(this.uiData.note.id), this.isDeleting
             ).then(
                 ()=>this.router.navigateByUrl('/')
             );

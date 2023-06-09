@@ -12,6 +12,11 @@ import { BaseView } from "../base/base.view";
 export class HomeView extends BaseView<{notes: Note[]}> implements OnInit, OnDestroy {
     private service: NotesService = inject(NotesService);
 
+    constructor(){
+        super();
+        this.uiData = {notes:[]};
+    }
+
     ngOnInit(){
         this.callService(this.service.listNotes()).then(
             notes => this.updateUiData({notes})

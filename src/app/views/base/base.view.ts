@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component, HostBinding, inject, OnDestroy } from "@angular/core";
-import { Observable, Subject } from "rxjs";
-import { takeUntil, finalize } from "rxjs/operators";
+import { BehaviorSubject, Observable, of, Subject } from "rxjs";
+import { takeUntil, finalize, catchError, tap } from "rxjs/operators";
 
 @Component({template: ''})
 export abstract class BaseView<T> implements OnDestroy {
@@ -17,15 +17,26 @@ export abstract class BaseView<T> implements OnDestroy {
         this.ngUnsubscribe$.complete();
     }
 
-    protected callService<T>(serviceCall: Observable<T>): Promise<T>{
-        return new Promise<T>(resolve=>{
-            this.isLoading=true;
+    protected callService<T>(serviceCall: Observable<T>, loadingIndicator?: Subject<boolean>): Promise<T>{
+        const updateStatus: (status: boolean)=>void = (status: boolean)=>{
+            this.isLoading=status;
+            loadingIndicator?.next(status);
+            this.changeDetectorRef.detectChanges();
+        }
+
+        return new Promise<T>((resolve, reject)=>{
+            updateStatus(true);
             serviceCall
                 .pipe(
                     takeUntil(this.ngUnsubscribe$),
-                    finalize(()=>this.isLoading=false)
+                    tap(resolve),
+                    catchError(err => {
+                        reject(err);
+                        return of(`Error caught: ${err}`);
+                    }),
+                    finalize(()=>updateStatus(false))
                 )
-                .subscribe(resolve);
+                .subscribe();
         });
     }
 

@@ -1,3 +1,3 @@
 export const environment = {
-    backendBaseUrl: 'TODO', // TODO: Should be different when it's deployed to Azure
+    backendBaseUrl: 'https://fsss-backend.azurewebsites.net'
 };

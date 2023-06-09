@@ -45,12 +45,14 @@ export class NoteView extends BaseView<{note: Note}> implements OnChanges, OnDes
                 this.service.updateNote(this.uiData.note), this.isSaving
             ).then(
                 note => this.updateUiData({note}),
+                err=>alert('An error occured while saving :('),
             );
         } else{
             this.callService(
                 this.service.createNote(this.uiData.note), this.isSaving
             ).then(
-                note => this.router.navigateByUrl(`/note/${note.id}`)
+                note => this.router.navigateByUrl(`/note/${note.id}`),
+                err=>alert('An error occured while saving :('),
             );
         }
     }
@@ -60,7 +62,8 @@ export class NoteView extends BaseView<{note: Note}> implements OnChanges, OnDes
             this.callService(
                 this.service.deleteNote(this.uiData.note.id), this.isDeleting
             ).then(
-                ()=>this.router.navigateByUrl('/')
+                ()=>this.router.navigateByUrl('/'),
+                err=>alert('An error occured while deleting :('),
             );
         } else{
             this.router.navigateByUrl('/');

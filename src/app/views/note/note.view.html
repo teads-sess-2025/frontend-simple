@@ -2,5 +2,5 @@
     <button (click)="saveChanges()" title="Save changes">{{(isSaving | async)?'...':'💾'}}</button>
     <button (click)="deleteNote()" title="Delete note">{{(isDeleting | async)?'...':'❌'}}</button>
 </div>
-<input class="fsss-note-view__title" type="text" [(ngModel)]="uiData.note.title"/>
+<input class="fsss-note-view__title" type="text" [ngModel]="uiData.note.title" (ngModelChange)="uiData.note.title=$event" />
 <textarea class="fsss-note-view__text" [(ngModel)]="uiData.note.text"></textarea>

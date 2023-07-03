@@ -69,4 +69,9 @@ export class NoteView extends BaseView<{note: Note}> implements OnChanges, OnDes
             this.router.navigateByUrl('/');
         }
     }
+
+    updateTitle(title: string){
+        //Here we could have some extra logic instead of just updating the model
+        this.updateUiData({note: {...this.uiData.note, title}})
+    }
 }

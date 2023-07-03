@@ -24,7 +24,11 @@ export class NoteView extends BaseView<{note: Note}> implements OnChanges, OnDes
 
     constructor(){
         super();
-        this.uiData = {note: {title: '', text:''}};
+        this.uiData$ = new BehaviorSubject({note: {title: '', text:''}});
+    }
+
+    get note(): Note{
+        return this.uiData$.value.note;
     }
   
     ngOnChanges(changes: SimpleChanges): void {
@@ -40,16 +44,16 @@ export class NoteView extends BaseView<{note: Note}> implements OnChanges, OnDes
     }
 
     saveChanges(){
-        if(isDefined(this.uiData.note.id)){
+        if(isDefined(this.note.id)){
             this.callService(
-                this.service.updateNote(this.uiData.note), this.isSaving
+                this.service.updateNote(this.note), this.isSaving
             ).then(
                 note => this.updateUiData({note}),
                 err=>alert('An error occured while saving :('),
             );
         } else{
             this.callService(
-                this.service.createNote(this.uiData.note), this.isSaving
+                this.service.createNote(this.note), this.isSaving
             ).then(
                 note => this.router.navigateByUrl(`/note/${note.id}`),
                 err=>alert('An error occured while saving :('),
@@ -58,9 +62,9 @@ export class NoteView extends BaseView<{note: Note}> implements OnChanges, OnDes
     }
 
     deleteNote(){
-        if(isDefined(this.uiData.note.id) && window.confirm("Are you sure you want to delete this note?")){
+        if(isDefined(this.note.id) && window.confirm("Are you sure you want to delete this note?")){
             this.callService(
-                this.service.deleteNote(this.uiData.note.id), this.isDeleting
+                this.service.deleteNote(this.note.id), this.isDeleting
             ).then(
                 ()=>this.router.navigateByUrl('/'),
                 err=>alert('An error occured while deleting :('),
@@ -71,7 +75,10 @@ export class NoteView extends BaseView<{note: Note}> implements OnChanges, OnDes
     }
 
     updateTitle(title: string){
-        //Here we could have some extra logic instead of just updating the model
-        this.updateUiData({note: {...this.uiData.note, title}})
+        this.updateUiData({note: {...this.note, title}})
+    }
+
+    updateText(text: string){
+        this.updateUiData({note: {...this.note, text}})
     }
 }

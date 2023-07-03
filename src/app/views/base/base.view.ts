@@ -7,7 +7,7 @@ export abstract class BaseView<T> implements OnDestroy {
     @HostBinding('class.fsss-loading-overlay')
     isLoading: boolean = false;
 
-    uiData: T;
+    uiData$: BehaviorSubject<T>;
     
     private changeDetectorRef = inject(ChangeDetectorRef);
     private ngUnsubscribe$: Subject<void> = new Subject();
@@ -20,8 +20,8 @@ export abstract class BaseView<T> implements OnDestroy {
     protected callService<T>(serviceCall: Observable<T>, loadingIndicator?: Subject<boolean>): Promise<T>{
         const updateStatus: (status: boolean)=>void = (status: boolean)=>{
             this.isLoading=status;
-            loadingIndicator?.next(status);
             this.changeDetectorRef.detectChanges();
+            loadingIndicator?.next(status);
         }
 
         return new Promise<T>((resolve, reject)=>{
@@ -41,7 +41,6 @@ export abstract class BaseView<T> implements OnDestroy {
     }
 
     protected updateUiData(changes: Partial<T>){
-        this.uiData={...this.uiData, ...changes};
-        this.changeDetectorRef.detectChanges();
+        this.uiData$.next({...this.uiData$.value, ...changes});
     }
 }

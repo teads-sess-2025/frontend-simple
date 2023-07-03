@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, inject, OnDestroy, OnInit } from "@angular/core";
+import { BehaviorSubject } from "rxjs";
 import { NotesService } from "src/app/services/notes.service";
 import { Note } from "src/app/types/note";
 import { BaseView } from "../base/base.view";
@@ -14,7 +15,7 @@ export class HomeView extends BaseView<{notes: Note[]}> implements OnInit, OnDes
 
     constructor(){
         super();
-        this.uiData = {notes:[]};
+        this.uiData$ = new BehaviorSubject({notes:[]});
     }
 
     ngOnInit(){

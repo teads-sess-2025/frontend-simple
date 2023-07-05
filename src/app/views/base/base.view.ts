@@ -17,11 +17,11 @@ export abstract class BaseView<T> implements OnDestroy {
         this.ngUnsubscribe$.complete();
     }
 
-    protected callService<T>(serviceCall: Observable<T>, loadingIndicator?: Subject<boolean>): Promise<T>{
+    protected callService<T>(serviceCall: Observable<T>, loadingIndicator$?: Subject<boolean>): Promise<T>{
         const updateStatus: (status: boolean)=>void = (status: boolean)=>{
             this.isLoading=status;
             this.changeDetectorRef.detectChanges();
-            loadingIndicator?.next(status);
+            loadingIndicator$?.next(status);
         }
 
         return new Promise<T>((resolve, reject)=>{

@@ -16,8 +16,8 @@ export class NoteView extends BaseView<{note: Note}> implements OnChanges, OnDes
     @Input()
     id: string;
 
-    isSaving: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-    isDeleting: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+    isSaving$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+    isDeleting$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
     private service: NotesService = inject(NotesService);
     private router = inject(Router)
@@ -46,14 +46,14 @@ export class NoteView extends BaseView<{note: Note}> implements OnChanges, OnDes
     saveChanges(){
         if(isDefined(this.note.id)){
             this.callService(
-                this.service.updateNote(this.note), this.isSaving
+                this.service.updateNote(this.note), this.isSaving$
             ).then(
                 note => this.updateUiData({note}),
                 err=>alert('An error occured while saving :('),
             );
         } else{
             this.callService(
-                this.service.createNote(this.note), this.isSaving
+                this.service.createNote(this.note), this.isSaving$
             ).then(
                 note => this.router.navigateByUrl(`/note/${note.id}`),
                 err=>alert('An error occured while saving :('),
@@ -64,7 +64,7 @@ export class NoteView extends BaseView<{note: Note}> implements OnChanges, OnDes
     deleteNote(){
         if(isDefined(this.note.id) && window.confirm("Are you sure you want to delete this note?")){
             this.callService(
-                this.service.deleteNote(this.note.id), this.isDeleting
+                this.service.deleteNote(this.note.id), this.isDeleting$
             ).then(
                 ()=>this.router.navigateByUrl('/'),
                 err=>alert('An error occured while deleting :('),

@@ -9,7 +9,7 @@ Run `ng serve` to start a development server.
 - The application will run at `http://localhost:4200/`.
 - When running on the development server, the application is connected to the **local development backend**
 - If you want the local development server to connect to the **production backend**, start it with the command `ng serve -c production`
-The application will automatically reload if you change any of the source files.
+- The application will automatically reload if you change any of the source files.
 - You can stop the development server by pressing `Ctrl + C` in the console
 
 ## Set backend URL

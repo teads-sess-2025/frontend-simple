@@ -31,7 +31,7 @@ If you wish to run the application in Docker (which is optional), use the follow
 ## Forking the project
 If you want to use this project as a basis for your own FE application, you should do the following:
 1. Fork this repository in GitHub:
-![image](https://github.com/ob-fsss-2024/frontend/assets/36840705/15bee300-c7d5-4c2c-a878-c262df343664)
+![252868690-15bee300-c7d5-4c2c-a878-c262df343664](https://github.com/ob-fsss-2024/frontend/assets/36840705/31571571-bebe-457c-a3a5-843289b2f0f7)
 2. Ask somebody with access to the Azure portal to create a deployment for you (Preferably @jgosar). This is what they will need to do:
 ```
 - Go to https://portal.azure.com/#view/HubsExtension/BrowseResource/resourceType/Microsoft.Web%2FStaticSites
@@ -46,8 +46,8 @@ If you want to use this project as a basis for your own FE application, you shou
 ```
 6. Delete the file `.github/workflows/azure-static-web-apps-agreeable-wave-0e5a08c03.yml` from your forked repository
 7. Open the build status by clicking on this green checkmark (Or yellow circle if the build is still executing):
-![image](https://github.com/ob-fsss-2024/frontend/assets/36840705/945551bb-b773-4d35-af51-0ea283261fe9)
-9. Wait for the build to complete
-10. Look for this in the output logs: `Visit your site at: https://[some-unique-url].azurestaticapps.net`
-11. Your app should be running on the specified URL, connected to the **production backend**
+![252869720-945551bb-b773-4d35-af51-0ea283261fe9](https://github.com/ob-fsss-2024/frontend/assets/36840705/522113db-6c39-43ec-98a9-cfd696b7be16)
+8. Wait for the build to complete
+9. Look for this in the output logs: `Visit your site at: https://[some-unique-url].azurestaticapps.net`
+10. Your app should be running on the specified URL, connected to the **production backend**
 

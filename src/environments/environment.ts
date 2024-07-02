@@ -1,3 +1,3 @@
 export const environment = {
-    backendBaseUrl: 'https://fsss-backend.azurewebsites.net'
+    backendBaseUrl: 'https://backend.greenisland-0015b907.westeurope.azurecontainerapps.io'
 };

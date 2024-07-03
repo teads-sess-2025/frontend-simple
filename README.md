@@ -2,7 +2,7 @@
 
 ## Prerequisites
 - npm
-- Node v16 (16.14.0 or above) or Node v18 (18.10.0 or above)
+- Node v22
 
 ## Development server
 Run `ng serve` to start a development server.

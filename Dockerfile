@@ -1,4 +1,4 @@
-from node:16 as node
+from node:22 as node
 
 WORKDIR /app
 COPY . .

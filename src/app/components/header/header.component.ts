@@ -1,10 +1,9 @@
-import { ChangeDetectionStrategy, Component } from "@angular/core";
+import { Component } from "@angular/core";
 
 @Component({
     selector: 'fsss-header',
     templateUrl: './header.component.html',
     styleUrls: ['./header.component.less'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HeaderComponent {
 

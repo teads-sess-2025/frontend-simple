@@ -1,9 +1,6 @@
-<ng-container *ngIf="uiData$ | async as uiData">
-    <div class="fsss-note-view__toolbar">
-        <button (click)="saveChanges()" title="Save changes">{{(isSaving$ | async)?'...':'💾'}}</button>
-        <button (click)="deleteNote()" title="Delete note">{{(isDeleting$ | async)?'...':'❌'}}</button>
+ <div class="fsss-note-view__toolbar">
+        <button (click)="saveChanges()" title="Save changes">💾</button>
+        <button (click)="deleteNote()" title="Delete note">❌</button>
     </div>
-    <input class="fsss-note-view__title" type="text" [ngModel]="uiData.note.title"
-        (ngModelChange)="updateTitle($event)" />
-    <textarea class="fsss-note-view__text" [ngModel]="uiData.note.text" (ngModelChange)="updateText($event)"></textarea>
-</ng-container>
+    <input class="fsss-note-view__title" type="text" [(ngModel)]="note.title" />
+    <textarea class="fsss-note-view__text" [(ngModel)]="note.text"></textarea>

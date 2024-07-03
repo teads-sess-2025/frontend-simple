@@ -15,6 +15,7 @@ import { NoteView } from './views/note/note.view';
     declarations: [
         AppComponent,
         HomeView,
+    HomeView,
         NoteView,
         AboutView,
         HeaderComponent,

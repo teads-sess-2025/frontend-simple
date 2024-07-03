@@ -5,13 +5,13 @@ import { HomeView } from './views/home/home.view';
 import { NoteView } from './views/note/note.view';
 
 const routes: Routes = [
-    { path: 'note/:id', component: NoteView },
-    { path: 'about', component: AboutView },
-    { path: '', component: HomeView }
+  { path: 'note/:id', component: NoteView },
+  { path: 'about', component: AboutView },
+  { path: '', component: HomeView },
 ];
 
 @NgModule({
-    imports: [RouterModule.forRoot(routes, { bindToComponentInputs: true })],
-    exports: [RouterModule]
+  imports: [RouterModule.forRoot(routes,{bindToComponentInputs: true})],
+  exports: [RouterModule]
 })
 export class AppRoutingModule { }

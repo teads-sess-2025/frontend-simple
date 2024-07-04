@@ -11,7 +11,8 @@ import { AboutView } from './views/about/about.view';
 import { HomeView } from './views/home/home.view'
 import { NoteView } from './views/note/note.view';
 
-@NgModule({ declarations: [
+@NgModule({
+    declarations: [
         AppComponent,
         HomeView,
         NoteView,
@@ -21,5 +22,6 @@ import { NoteView } from './views/note/note.view';
     ],
     bootstrap: [AppComponent], imports: [BrowserModule,
         AppRoutingModule,
-        FormsModule], providers: [provideHttpClient(withInterceptorsFromDi())] })
+        FormsModule], providers: [provideHttpClient(withInterceptorsFromDi())]
+})
 export class AppModule { }

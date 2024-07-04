@@ -10,17 +10,17 @@ import { BaseView } from "../base/base.view";
     styleUrls: ['./home.view.less'],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class HomeView extends BaseView<{notes: Note[]}> implements OnInit, OnDestroy {
+export class HomeView extends BaseView<{ notes: Note[] }> implements OnInit, OnDestroy {
     private service: NotesService = inject(NotesService);
 
-    constructor(){
+    constructor() {
         super();
-        this.uiData$ = new BehaviorSubject({notes:[]});
+        this.uiData$ = new BehaviorSubject({ notes: [] });
     }
 
-    ngOnInit(){
+    ngOnInit() {
         this.callService(this.service.listNotes()).then(
-            notes => this.updateUiData({notes})
+            notes => this.updateUiData({ notes })
         );
     }
 }

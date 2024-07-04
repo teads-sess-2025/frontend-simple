@@ -2,13 +2,13 @@ import { ChangeDetectorRef, Component, HostBinding, inject, OnDestroy } from "@a
 import { BehaviorSubject, Observable, of, Subject } from "rxjs";
 import { takeUntil, finalize, catchError, tap } from "rxjs/operators";
 
-@Component({template: ''})
+@Component({ template: '' })
 export abstract class BaseView<T> implements OnDestroy {
     @HostBinding('class.fsss-loading-overlay')
     isLoading: boolean = false;
 
     uiData$: BehaviorSubject<T>;
-    
+
     private changeDetectorRef = inject(ChangeDetectorRef);
     private ngUnsubscribe$: Subject<void> = new Subject();
 
@@ -17,14 +17,14 @@ export abstract class BaseView<T> implements OnDestroy {
         this.ngUnsubscribe$.complete();
     }
 
-    protected callService<T>(serviceCall: Observable<T>, loadingIndicator$?: Subject<boolean>): Promise<T>{
-        const updateStatus: (status: boolean)=>void = (status: boolean)=>{
-            this.isLoading=status;
+    protected callService<T>(serviceCall: Observable<T>, loadingIndicator$?: Subject<boolean>): Promise<T> {
+        const updateStatus: (status: boolean) => void = (status: boolean) => {
+            this.isLoading = status;
             this.changeDetectorRef.detectChanges();
             loadingIndicator$?.next(status);
         }
 
-        return new Promise<T>((resolve, reject)=>{
+        return new Promise<T>((resolve, reject) => {
             updateStatus(true);
             serviceCall
                 .pipe(
@@ -34,13 +34,13 @@ export abstract class BaseView<T> implements OnDestroy {
                         reject(err);
                         return of(`Error caught: ${err}`);
                     }),
-                    finalize(()=>updateStatus(false))
+                    finalize(() => updateStatus(false))
                 )
                 .subscribe();
         });
     }
 
-    protected updateUiData(changes: Partial<T>){
-        this.uiData$.next({...this.uiData$.value, ...changes});
+    protected updateUiData(changes: Partial<T>) {
+        this.uiData$.next({ ...this.uiData$.value, ...changes });
     }
 }

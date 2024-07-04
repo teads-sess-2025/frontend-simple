@@ -33,21 +33,31 @@ If you want to use this project as a basis for your own FE application, you shou
 1. Fork this repository in GitHub:
 ![252868690-15bee300-c7d5-4c2c-a878-c262df343664](https://github.com/ob-fsss-2024/frontend/assets/36840705/31571571-bebe-457c-a3a5-843289b2f0f7)
 2. Ask somebody with access to the Azure portal to create a deployment for you (Preferably @jgosar). This is what they will need to do:
-```
 - Go to https://portal.azure.com/#view/HubsExtension/BrowseResource/resourceType/Microsoft.Web%2FStaticSites
 - Click Create
-- Enter props:
-  - Resource Group: Frontend
+- Basic tab:
+  - Subscription:
+    - Resource Group: ob-fsss-2024
+  - Static Web App details:
+    - Name: Name of the web app
+  - Deployment details:
+    - Source: Other
+- Advanced tab:
   - Region: West Europe
-  - Github: Use the newly forked repository
-  - Build presets: Angular
-  - Output location: dist/frontend
-- Click Review and create
-```
-6. Delete the file `.github/workflows/azure-static-web-apps-agreeable-wave-0e5a08c03.yml` from your forked repository
-7. Open the build status by clicking on this green checkmark (Or yellow circle if the build is still executing):
-![252869720-945551bb-b773-4d35-af51-0ea283261fe9](https://github.com/ob-fsss-2024/frontend/assets/36840705/522113db-6c39-43ec-98a9-cfd696b7be16)
-8. Wait for the build to complete
-9. Look for this in the output logs: `Visit your site at: https://[some-unique-url].azurestaticapps.net`
-10. Your app should be running on the specified URL, connected to the **production backend**
+- Click Review + create
+- Go back to https://portal.azure.com/#view/HubsExtension/BrowseResource/resourceType/Microsoft.Web%2FStaticSites and wait for the new app to appear (~1 minute)
+- Click on the new app, open the tab "Manage deployment token" and copy the value
+- In the GitHub project set the following:
+  - Settings -> Secrets and variables -> Actions -> New repository secret
+    - Name: AZURE_TOKEN
+    - Value: [paste token value]
+3. In the GitHub project go to the Actions tab:
+  - Click on "I understand my workflows, go ahead and enable them"
+  - Go to the action "Azure Static Web Apps CI/CD" in the sidebar
+  - Click "Run workflow"
+  - Open the build status by clicking on the "Azure Static Web Apps CI/CD" entry that appeared below
+ ![image](https://github.com/ob-fsss-2024/frontend/assets/36840705/c69c822f-8f3e-448d-803d-1d691e63c819)
+4. Open "Build and Deploy job" and wait for the "Build and Deploy" phase to complete
+5. Look for this in the output logs: `Visit your site at: https://[some-unique-url].azurestaticapps.net`
+6. Your app should be running on the specified URL, connected to the **production backend**
 

@@ -1,84 +1,55 @@
-import { ChangeDetectionStrategy, Component, inject, Input, OnChanges, OnDestroy, SimpleChanges } from "@angular/core";
+import { Component, inject, Input, OnChanges, SimpleChanges } from "@angular/core";
 import { Router } from "@angular/router";
-import { BehaviorSubject } from "rxjs";
 import { isDefined } from "src/app/helpers/common.helpers";
-import { NotesService } from "src/app/services/notes.service";
 import { Note } from "src/app/types/note";
-import { BaseView } from "../base/base.view";
+import { HttpClient } from "@angular/common/http";
+import { NOTES_BASE_URL } from "../../app.config";
 
 @Component({
-    selector: 'fsss-note-view',
     templateUrl: './note.view.html',
     styleUrls: ['./note.view.less'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class NoteView extends BaseView<{ note: Note }> implements OnChanges, OnDestroy {
+export class NoteView implements OnChanges {
     @Input()
     id: string;
 
-    isSaving$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-    isDeleting$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-
-    private service: NotesService = inject(NotesService);
+    private http = inject(HttpClient);
     private router = inject(Router)
 
-    constructor() {
-        super();
-        this.uiData$ = new BehaviorSubject({ note: { title: '', text: '' } });
-    }
+    note: Note = { title: '', text: '' };
 
-    get note(): Note {
-        return this.uiData$.value.note;
-    }
 
     ngOnChanges(changes: SimpleChanges): void {
         if (changes['id'] && isDefined(this.id)) {
             if (this.id !== 'new') {
-                this.callService(
-                    this.service.getNote(parseInt(this.id, 10))
-                ).then(
-                    note => this.updateUiData({ note })
-                );
+                this.http.get<Note>(
+                    `${NOTES_BASE_URL}/${this.id}`
+                ).subscribe(note => this.note = note);
             }
         }
     }
 
     saveChanges() {
         if (isDefined(this.note.id)) {
-            this.callService(
-                this.service.updateNote(this.note), this.isSaving$
-            ).then(
-                note => this.updateUiData({ note }),
-                err => alert('An error occured while saving :('),
-            );
+            this.http.put<Note>(
+                `${NOTES_BASE_URL}/${this.note.id}`,
+                this.note
+            ).subscribe(note => this.note = note);
         } else {
-            this.callService(
-                this.service.createNote(this.note), this.isSaving$
-            ).then(
-                note => this.router.navigateByUrl(`/note/${note.id}`),
-                err => alert('An error occured while saving :('),
-            );
+            this.http.post<Note>(
+                NOTES_BASE_URL,
+                this.note
+            ).subscribe(note => this.router.navigateByUrl(`/note/${note.id}`));
         }
     }
 
     deleteNote() {
         if (isDefined(this.note.id) && window.confirm("Are you sure you want to delete this note?")) {
-            this.callService(
-                this.service.deleteNote(this.note.id), this.isDeleting$
-            ).then(
-                () => this.router.navigateByUrl('/'),
-                err => alert('An error occured while deleting :('),
-            );
+            this.http.delete<void>(
+                `${NOTES_BASE_URL}/${this.note.id}`,
+            ).subscribe(() => this.router.navigateByUrl('/'));
         } else {
             this.router.navigateByUrl('/');
         }
-    }
-
-    updateTitle(title: string) {
-        this.updateUiData({ note: { ...this.note, title } })
-    }
-
-    updateText(text: string) {
-        this.updateUiData({ note: { ...this.note, text } })
     }
 }

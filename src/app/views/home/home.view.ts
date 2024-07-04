@@ -1,26 +1,18 @@
-import { ChangeDetectionStrategy, Component, inject, OnDestroy, OnInit } from "@angular/core";
-import { BehaviorSubject } from "rxjs";
-import { NotesService } from "src/app/services/notes.service";
+import { Component, inject, OnInit } from "@angular/core";
 import { Note } from "src/app/types/note";
-import { BaseView } from "../base/base.view";
+import { HttpClient } from "@angular/common/http";
+import { NOTES_BASE_URL } from "../../app.config";
 
 @Component({
-    selector: 'fsss-home-view',
     templateUrl: './home.view.html',
     styleUrls: ['./home.view.less'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class HomeView extends BaseView<{ notes: Note[] }> implements OnInit, OnDestroy {
-    private service: NotesService = inject(NotesService);
+export class HomeView implements OnInit {
+    private http = inject(HttpClient);
 
-    constructor() {
-        super();
-        this.uiData$ = new BehaviorSubject({ notes: [] });
-    }
+    notes: Note[] = [];
 
     ngOnInit() {
-        this.callService(this.service.listNotes()).then(
-            notes => this.updateUiData({ notes })
-        );
+        this.http.get<Note[]>(NOTES_BASE_URL).subscribe(notes => this.notes = notes);
     }
 }

@@ -1,32 +1,32 @@
-import { Component, inject, Input, OnChanges, SimpleChanges } from "@angular/core";
+import { Component, inject, input, effect } from "@angular/core";
 import { Router } from "@angular/router";
 import { isDefined } from "src/app/helpers/common.helpers";
 import { Note } from "src/app/types/note";
 import { HttpClient } from "@angular/common/http";
 import { NOTES_BASE_URL } from "../../app.config";
+import {FormsModule} from "@angular/forms";
 
 @Component({
-    templateUrl: './note.view.html',
-    styleUrls: ['./note.view.less'],
+    templateUrl: 'note.view.html',
+    styleUrl: 'note.view.less',
+    imports: [FormsModule],
 })
-export class NoteView implements OnChanges {
-    @Input()
-    id: string;
+export class NoteView {
+    id = input<string>();
 
     private http = inject(HttpClient);
     private router = inject(Router)
 
     note: Note = { title: '', text: '' };
 
-
-    ngOnChanges(changes: SimpleChanges): void {
-        if (changes['id'] && isDefined(this.id)) {
-            if (this.id !== 'new') {
+    constructor(){
+        effect(()=>{
+            if (this.id() && isDefined(this.id()) && this.id() !== 'new') {
                 this.http.get<Note>(
-                    `${NOTES_BASE_URL}/${this.id}`
+                    `${NOTES_BASE_URL}/${this.id()}`
                 ).subscribe(note => this.note = note);
             }
-        }
+        })
     }
 
     saveChanges() {

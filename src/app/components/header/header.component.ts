@@ -4,6 +4,7 @@ import { Component } from "@angular/core";
     selector: 'fsss-header',
     templateUrl: './header.component.html',
     styleUrls: ['./header.component.less'],
+    standalone: false
 })
 export class HeaderComponent {
 

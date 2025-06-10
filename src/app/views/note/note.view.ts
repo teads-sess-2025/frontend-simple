@@ -8,6 +8,7 @@ import { NOTES_BASE_URL } from "../../app.config";
 @Component({
     templateUrl: './note.view.html',
     styleUrls: ['./note.view.less'],
+    standalone: false
 })
 export class NoteView implements OnChanges {
     @Input()

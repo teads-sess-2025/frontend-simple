@@ -6,6 +6,7 @@ import { NOTES_BASE_URL } from "../../app.config";
 @Component({
     templateUrl: './home.view.html',
     styleUrls: ['./home.view.less'],
+    standalone: false
 })
 export class HomeView implements OnInit {
     private http = inject(HttpClient);

@@ -4,11 +4,12 @@ import { isDefined } from "src/app/helpers/common.helpers";
 import { Note } from "src/app/types/note";
 import { HttpClient } from "@angular/common/http";
 import { NOTES_BASE_URL } from "../../app.config";
+import {FormsModule} from "@angular/forms";
 
 @Component({
     templateUrl: 'note.view.html',
     styleUrl: 'note.view.less',
-    standalone: false
+    imports: [FormsModule],
 })
 export class NoteView {
     id = input<string>();

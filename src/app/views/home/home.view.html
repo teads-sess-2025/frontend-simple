@@ -4,11 +4,11 @@
         Create new note
     </div>
 </a>
-<ng-container *ngFor="let note of notes">
+@for(note of notes; track note.id) {
     <a routerLink="/note/{{note.id}}">
         <div class="fsss-home-view__note-preview">
             <h2>{{note.title}}</h2>
             <textarea readonly class="fsss-home-view__note-text" [ngModel]="note.text"></textarea>
         </div>
     </a>
-</ng-container>
+}

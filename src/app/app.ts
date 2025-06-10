@@ -10,5 +10,4 @@ import {HeaderComponent} from "./components/header/header.component";
   styleUrl: 'app.less'
 })
 export class App {
-  protected title = 'sess-frontend';
 }

@@ -4,8 +4,8 @@ import { HttpClient } from "@angular/common/http";
 import { NOTES_BASE_URL } from "../../app.config";
 
 @Component({
-    templateUrl: './home.view.html',
-    styleUrls: ['./home.view.less'],
+    templateUrl: 'home.view.html',
+    styleUrl: 'home.view.less',
     standalone: false
 })
 export class HomeView implements OnInit {

@@ -1,4 +1,4 @@
-# FSSS-Frontend
+# SESS-Frontend
 
 ## Prerequisites
 - npm
@@ -37,7 +37,7 @@ If you want to use this project as a basis for your own FE application, you shou
 - Click Create
 - Basic tab:
   - Subscription:
-    - Resource Group: ob-fsss-2024
+    - Resource Group: teads-sess-2025
   - Static Web App details:
     - Name: Name of the web app
   - Deployment details:

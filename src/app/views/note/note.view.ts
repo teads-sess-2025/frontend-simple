@@ -1,6 +1,5 @@
 import { Component, inject, input, effect } from "@angular/core";
 import { Router } from "@angular/router";
-import { isDefined } from "src/app/helpers/common.helpers";
 import { Note } from "src/app/types/note";
 import { HttpClient } from "@angular/common/http";
 import { NOTES_BASE_URL } from "../../app.config";
@@ -21,7 +20,7 @@ export class NoteView {
 
     constructor(){
         effect(()=>{
-            if (this.id() && isDefined(this.id()) && this.id() !== 'new') {
+            if (this.id() && this.id() !== 'new') {
                 this.http.get<Note>(
                     `${NOTES_BASE_URL}/${this.id()}`
                 ).subscribe(note => this.note = note);
@@ -30,7 +29,7 @@ export class NoteView {
     }
 
     saveChanges() {
-        if (isDefined(this.note.id)) {
+        if (this.note.id) {
             this.http.put<Note>(
                 `${NOTES_BASE_URL}/${this.note.id}`,
                 this.note
@@ -44,7 +43,7 @@ export class NoteView {
     }
 
     deleteNote() {
-        if (isDefined(this.note.id) && window.confirm("Are you sure you want to delete this note?")) {
+        if (this.note.id && window.confirm("Are you sure you want to delete this note?")) {
             this.http.delete<void>(
                 `${NOTES_BASE_URL}/${this.note.id}`,
             ).subscribe(() => this.router.navigateByUrl('/'));

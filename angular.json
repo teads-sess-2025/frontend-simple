@@ -12,7 +12,7 @@
             },
             "root": "",
             "sourceRoot": "src",
-            "prefix": "fsss",
+            "prefix": "sess",
             "architect": {
                 "build": {
                     "builder": "@angular/build:application",

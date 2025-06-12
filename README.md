@@ -1,4 +1,4 @@
-# FSSS-Frontend
+# SESS-Frontend
 
 ## Prerequisites
 - npm
@@ -31,13 +31,13 @@ If you wish to run the application in Docker (which is optional), use the follow
 ## Forking the project
 If you want to use this project as a basis for your own FE application, you should do the following:
 1. Fork this repository in GitHub:
-![252868690-15bee300-c7d5-4c2c-a878-c262df343664](https://github.com/ob-fsss-2024/frontend/assets/36840705/31571571-bebe-457c-a3a5-843289b2f0f7)
+![252868690-15bee300-c7d5-4c2c-a878-c262df343664](https://github.com/ob-sess-2024/frontend/assets/36840705/31571571-bebe-457c-a3a5-843289b2f0f7)
 2. Ask somebody with access to the Azure portal to create a deployment for you (Preferably @jgosar). This is what they will need to do:
 - Go to https://portal.azure.com/#view/HubsExtension/BrowseResource/resourceType/Microsoft.Web%2FStaticSites
 - Click Create
 - Basic tab:
   - Subscription:
-    - Resource Group: ob-fsss-2024
+    - Resource Group: ob-sess-2025
   - Static Web App details:
     - Name: Name of the web app
   - Deployment details:
@@ -56,7 +56,7 @@ If you want to use this project as a basis for your own FE application, you shou
   - Go to the action "Azure Static Web Apps CI/CD" in the sidebar
   - Click "Run workflow"
   - Open the build status by clicking on the "Azure Static Web Apps CI/CD" entry that appeared below
- ![image](https://github.com/ob-fsss-2024/frontend/assets/36840705/c69c822f-8f3e-448d-803d-1d691e63c819)
+ ![image](https://github.com/ob-sess-2024/frontend/assets/36840705/c69c822f-8f3e-448d-803d-1d691e63c819)
 4. Open "Build and Deploy job" and wait for the "Build and Deploy" phase to complete
 5. Look for this in the output logs: `Visit your site at: https://[some-unique-url].azurestaticapps.net`
 6. Your app should be running on the specified URL, connected to the **production backend**

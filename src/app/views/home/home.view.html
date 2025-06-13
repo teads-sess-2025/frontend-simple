@@ -4,7 +4,7 @@
         Create new note
     </div>
 </a>
-@for(note of notes; track note.id) {
+@for(note of notes(); track note.id) {
     <a routerLink="/note/{{note.id}}">
         <div class="sess-home-view__note-preview">
             <h2>{{note.title}}</h2>

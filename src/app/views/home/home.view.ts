@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from "@angular/core";
+import { Component, inject, OnInit, signal } from "@angular/core";
 import { Note } from "src/app/types/note";
 import { HttpClient } from "@angular/common/http";
 import { NOTES_BASE_URL } from "../../app.config";
@@ -14,9 +14,9 @@ import {RouterModule} from "@angular/router";
 export class HomeView implements OnInit {
     private http = inject(HttpClient);
 
-    notes: Note[] = [];
+    notes = signal<Note[]>([]);
 
     ngOnInit() {
-        this.http.get<Note[]>(NOTES_BASE_URL).subscribe(notes => this.notes = notes);
+        this.http.get<Note[]>(NOTES_BASE_URL).subscribe(notes => this.notes.set(notes));
     }
 }

@@ -2,5 +2,5 @@
     <button (click)="saveChanges()" title="Save changes">💾</button>
     <button (click)="deleteNote()" title="Delete note">❌</button>
 </div>
-<input class="sess-note-view__title" type="text" [(ngModel)]="note.title" />
-<textarea class="sess-note-view__text" [(ngModel)]="note.text"></textarea>
+<input class="sess-note-view__title" type="text" [ngModel]="note().title" (ngModelChange)="updateTitle($event)" />
+<textarea class="sess-note-view__text" [ngModel]="note().text" (ngModelChange)="updateText($event)"></textarea>
